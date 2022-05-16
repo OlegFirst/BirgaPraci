@@ -1,2 +1,2 @@
 # BirgaPraci
-Studing project. React + Redux + Noe + MongoDB
+Studing project. React + Redux + Node + MongoDB
