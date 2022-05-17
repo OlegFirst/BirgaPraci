@@ -3,12 +3,12 @@ import { url } from '../constants/main';
 
 // Sign in / up
 export const sign = ({ urlPoint, props }, readed) => {
-	console.log(urlPoint, props);
+	console.log('sign', urlPoint, props);
 	
 	axios
 		.post(url + urlPoint, props)
 		.then(res => {
-			console.log(res, res.data)
+			console.log('sign OK', res);
 			
 			readed({
 				isSuccess: true,
@@ -16,6 +16,8 @@ export const sign = ({ urlPoint, props }, readed) => {
 			});
 		})
 		.catch(err => {
+			console.log('sign False', err);
+			
 			readed({
 				isSuccess: false,
 				data: err
@@ -78,8 +80,7 @@ export const post = ({ urlPoint, props, token }, readed) => {
 
 // Delete method
 export const deleteMethod = ({ urlPoint, token }, readed) => {
-	console.log(url + urlPoint, token);
-	
+	console.log(url + urlPoint, token);	
 	
 	axios
 		.delete(url + urlPoint, {

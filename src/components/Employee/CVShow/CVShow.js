@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 
 import Header from '../../Header/Header';
 import Button from '../../_commonComponents/Button/Button';
+import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 import Footer from '../../Footer/Footer';
 
-// import { resumeInfo } from '../../../constants/main';
 import { 
 	get,
 	deleteMethod
@@ -36,6 +36,7 @@ const CVShow = () => {
 	
 	const [resumeInfo, setResumeInfo] = useState({...data});
 	const [isResumeCreated, setIsResumeCreated] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	
 	const token = useSelector(state => state.token);
 	
@@ -45,7 +46,11 @@ const CVShow = () => {
 			token
 		};
 		
+		setIsLoading(true);
+		
 		get(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
 			if (isSuccess) {				
 				const candidates = data.candidates;
 				
@@ -58,7 +63,9 @@ const CVShow = () => {
 					cvId = null;
 				}
 			} else {
-				alert(`Can't load data. ${data.response.data.message}`);
+				setTimeout(() => {
+					alert(`Can't load data. ${data.response.data.message}`);
+				}, 0);
 			}
 		});
 	}, []);

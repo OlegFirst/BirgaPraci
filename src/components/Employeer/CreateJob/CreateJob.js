@@ -7,6 +7,7 @@ import InputWrapper from '../../_commonComponents/InputWrapper/InputWrapper';
 import TextareaWrapper from '../../_commonComponents/TextareaWrapper/TextareaWrapper';
 import CreateJobFilter from './CreateJobFilter';
 import Button from '../../_commonComponents/Button/Button';
+import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 import Footer from '../../Footer/Footer';
 
 import { post } from '../../../services';
@@ -16,7 +17,7 @@ import {
 	errorList
 } from '../../../services/validations';
 
-const CreateJob = () => {	eployeerName
+const CreateJob = () => {
 	const data = {
 		eployeerName: '',
 		number: '',
@@ -35,6 +36,7 @@ const CreateJob = () => {	eployeerName
 	const token = useSelector(state => state.token);
 	const createJobFilterActivity = useSelector(state => state.createJobFilterActivity);
 	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState(false);
 	
 	const changeHandler = e => {		
 		const { name, value } = e.target;
@@ -120,8 +122,6 @@ const CreateJob = () => {	eployeerName
 			isAllCorrect = false;
 		}
 		
-		console.log(1)
-		
 		if (!isAllCorrect) {
 			return;
 		}
@@ -136,14 +136,20 @@ const CreateJob = () => {	eployeerName
 			token
 		};
 		
-		console.log(2)
+		setIsLoading(true);
 		
 		post(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
 			if (isSuccess) {
-				alert('Success!');
+				setTimeout(() => {
+					alert('Success!');
+				}, 0);
 				navigate('/');
 			} else {
-				alert(`Can't save. ${data.response.data.message}`);
+				setTimeout(() => {
+					alert(`Error. ${data.response.data.message}`);
+				}, 0);
 			}
 		});
 	};
@@ -247,6 +253,8 @@ const CreateJob = () => {	eployeerName
 			</main>
 			
 			<Footer />
+			
+			<LoadingMessage isShow={isLoading} />
 		</section>
 	);
 }

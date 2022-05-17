@@ -8,8 +8,6 @@ import {
 function useRequest({ url, type, method='GET', dataKey }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const dispatch = useDispatch();
-	
-	
 		
 	useEffect(() => {
 		const loadData = async() => {
@@ -18,8 +16,6 @@ function useRequest({ url, type, method='GET', dataKey }) {
 					url,
 					method
 				});
-				
-				console.log(console.log(response))
 				
 				dispatch({ 
 					type,

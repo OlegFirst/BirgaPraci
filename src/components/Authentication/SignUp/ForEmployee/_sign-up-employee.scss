@@ -2,7 +2,7 @@
 	padding-bottom: 20px;
 	
 	& > .sign-up-employee__title {
-		margin-top: 100px;
+		margin-top: 50px;
 		text-align: center;
 		font-weight: bold;
 		text-transform: capitalize;
@@ -12,15 +12,15 @@
 		position: relative;
 		@include flex(column);
 		border: 3px solid $color-grey;
-		margin: 100px auto 0 auto;
-		width: 500px;
+		margin: 50px auto 0 auto;
+		width: 400px;
 		padding: 40px;
 		padding-top: 20px;
 		padding-bottom: 0;
 		
 		& > .main__field {
 			width: 100%;
-			margin-bottom: 40px;
+			margin-bottom: 30px;
 			
 			& button.button {
 				width: 100%;

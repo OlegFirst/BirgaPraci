@@ -1,6 +1,7 @@
 .cv {
 	& > .cv__main {
 		padding: 20px 40px;
+		max-width: 800px;
 	
 		& > .main {
 			&__title {
@@ -29,7 +30,7 @@
 						& > span {
 							position: absolute;
 							color: $color-grey_1;
-							font-size: 0.5rem;
+							font-size: 1rem;
 							top: 40px;
 						}
 					}

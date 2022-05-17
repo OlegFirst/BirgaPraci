@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Header from '../../../Header/Header';
 import InputWrapper from '../../../_commonComponents/InputWrapper/InputWrapper';
 import Button from '../../../_commonComponents/Button/Button';
+import LoadingMessage from '../../../_commonComponents/LoadingMessage/LoadingMessage';
 
 import { routerArray } from '../../../../constants/router';
 
@@ -29,6 +30,8 @@ const SignUpEmployee = () => {
 		password: '',
 		passwordRepeat: ''
 	});
+	
+	const [isLoading, setIsLoading] = useState(false);
 	
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -98,9 +101,11 @@ const SignUpEmployee = () => {
 			}
 		};
 		
-		// roles: 'recruiter'
+		setIsLoading(true);
 		
-		sign(request, ({ isSuccess, data }) => {			
+		sign(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
 			if (isSuccess) {
 				// - Clearing data to the Storage	
 				dispatch({
@@ -115,7 +120,10 @@ const SignUpEmployee = () => {
 					type: 'setUserRole',
 					value: 'undefined'
 				});
-				alert('SignIn, будь-ласка, для продовження!');
+				
+				setTimeout(() => {
+					alert('SignIn, будь-ласка, для продовження!');
+				}, 0);
 				navigate('/entrance');
 			} else {
 				// - Saving data to the Storage	
@@ -131,7 +139,10 @@ const SignUpEmployee = () => {
 					type: 'setUserRole',
 					value: 'undefined'
 				});
-				alert(`Error. ${data.response.data.message}`);
+				
+				setTimeout(() => {
+					alert(`Error. ${data.response.data.message}`);
+				}, 0);
 			}
 		});
 	};
@@ -187,6 +198,8 @@ const SignUpEmployee = () => {
 					<Link to={routerArray[1].path}>{routerArray[1].text}</Link>
 				</span>
 			</div>
+			
+			<LoadingMessage isShow={isLoading} />
 		</section>
 	);
 }

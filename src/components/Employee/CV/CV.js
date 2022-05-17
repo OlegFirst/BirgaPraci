@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import Header from '../../Header/Header';
 import Button from '../../_commonComponents/Button/Button';
 import InputWrapper from '../../_commonComponents/InputWrapper/InputWrapper';
+import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 import Footer from '../../Footer/Footer';
 
 import { 
@@ -39,7 +40,8 @@ const CV = () => {
 	
 	const email = useSelector(state => state.email);
 	const token = useSelector(state => state.token);
-	const navigate = useNavigate();
+	const navigate = useNavigate();	
+	const [isLoading, setIsLoading] = useState(false);
 	
 	const changeHandler = e => {
 		const { name, value } = e.target;
@@ -186,15 +188,22 @@ const CV = () => {
 				...input
 			},
 			token
-		};
+		};		
+		
+		setIsLoading(true);
 		
 		post(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
 			if (isSuccess) {				
-				alert('Success!');
+				setTimeout(() => {
+					alert('Success');
+				}, 0);
 				navigate('/');
 			} else {
-				
-				alert(`Can't save. ${data.response.data.message}`);
+				setTimeout(() => {
+					alert(`Can't save. ${data.response.data.message}`);
+				}, 0);
 			}
 		});
 	};
@@ -395,6 +404,8 @@ const CV = () => {
 			</main>
 			
 			<Footer />
+			
+			<LoadingMessage isShow={isLoading} />
 		</section>
 	);
 }

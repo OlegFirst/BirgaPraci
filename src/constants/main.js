@@ -46,4 +46,9 @@ export const resumeInfo = {
 	learningDataEnd: '02.02.2014'
 };
 
+// Local hosting
+// To run type: npm run start:dev
+// export const url = 'http://localhost:4343/api/v1';
+
+// Heroku hosting
 export const url = 'https://refugees-work.herokuapp.com/api/v1';
