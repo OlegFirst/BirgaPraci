@@ -227,11 +227,10 @@ const CVShow = () => {
 							
 							<div className="main__button">
 								<Link
-									to={'#'}
+									to={'/resume-edit'}
 									className="button"
-									onClick={deleteButtonHandler}
 								>
-									Delete
+									Редагувати
 								</Link>
 							</div>
 						</div>
@@ -245,10 +244,3 @@ const CVShow = () => {
 }
 
 export default CVShow;
-
-// <Link
-	// to={'/resume-edit'}
-	// className="button"
-// >
-	// Редагувати
-// </Link>

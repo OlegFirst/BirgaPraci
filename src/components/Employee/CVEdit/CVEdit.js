@@ -1,42 +1,107 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Header from '../../Header/Header';
 import Button from '../../_commonComponents/Button/Button';
-import InputWrapper from '../../_commonComponents/InputWrapper/InputWrapper';
+import InputWrapperEdit from '../../_commonComponents/InputWrapperEdit/InputWrapperEdit';
 import Footer from '../../Footer/Footer';
+import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 
-import { commonValidator } from '../../../services/validations';
+import { commonValidator, errorList } from '../../../services/validations';
 import { resumeInfo } from '../../../constants/main';
 
-// TO DO:
-// - save
-// - remove
+import { useSelector } from 'react-redux';
+
+import {
+	get,
+	put
+} from '../../../services';
+
+const data = {
+	name: '',
+	birth: '',
+	phoneNumber: '',
+	positionWant: '',
+	region: '',
+	
+	company: '',
+	position: '',
+	workDateFrom: '',
+	workDateTo: '',
+
+	educationLevel: '',
+	educationPlace: '',
+	speciality: '',
+	studyDateFrom: '',
+	studyDateTo: ''
+};
 
 const CV = () => {
-	const data = {
-		nameSurname: '',
-		birthdayDate: '',
-		phone: '',
-		lookingForPosition: '',
-		lookingForCity: '',
-		
-		company: '',
-		position: '',
-		dateStart: '',
-		dateEnd: '',
-
-		educationLevel: '',
-		school: '',
-		specialization: '',
-		learningDataStart: '',
-		learningDataEnd: ''
-	};
-	
-	const dataProps = resumeInfo;
-	
-	const [input, setInput] = useState({...dataProps});
-	
+	const [input, setInput] = useState({...data});	
 	const [errors, setErrors] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const [isResumeCreated, setIsResumeCreated] = useState(false);
+	
+	useEffect(() => {
+		const request = {
+			urlPoint: '/candidates',
+			token
+		};
+		
+		setIsLoading(true);
+		
+		get(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
+			if (isSuccess) {				
+				const candidates = data.candidates;
+				
+				if (candidates.length > 0) {
+					setIsResumeCreated(true);					
+					const {
+						name,
+						birth,
+						phoneNumber,
+						positionWant,
+						region,						
+						company,
+						position,
+						workDateFrom,
+						workDateTo,
+						educationLevel,
+						educationPlace,
+						speciality,
+						studyDateFrom,
+						studyDateTo
+					} = data.candidates[0];					
+					setInput({
+						name,
+						birth,
+						phoneNumber,
+						positionWant,
+						region,						
+						company,
+						position,
+						workDateFrom,
+						workDateTo,
+						educationLevel,
+						educationPlace,
+						speciality,
+						studyDateFrom,
+						studyDateTo
+					});
+				}
+			} else {
+				setTimeout(() => {
+					alert(`Can't load data. ${data.response.data.message}`);
+				}, 0);
+			}
+		});
+	}, []);
+	
+	const token = useSelector(state => state.token);
+	const email = useSelector(state => state.email);
+	const navigate = useNavigate();
 	
 	const changeHandler = e => {
 		const { name, value } = e.target;
@@ -48,49 +113,52 @@ const CV = () => {
 	}
 	
 	const buttonSaveClickHandler = () => {
-		console.log(input.nameSurname)
+		if (!token) {
+			alert('Вам потрібно спочатку увійти в програму');
+			return;
+		}
 		
 		let isAllCorrect = true;
 		setErrors({...data});
 		
 		// Card ---------------------------------
-		if (!commonValidator(input.nameSurname)) {
+		if (!commonValidator(input.name)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				nameSurname: 'Некоректні імя та чи прізвище'
+				name: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.lookingForPosition)) {
+		if (!commonValidator(input.positionWant)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				lookingForPosition: 'Некоректна посада'
+				positionWant: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.birthdayDate)) {
+		if (!commonValidator(input.birth)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				birthdayDate: 'Некоректна дата'
+				birth: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.phone)) {
+		if (!commonValidator(input.phoneNumber)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				phone: 'Некоректний номер телефону'
+				phoneNumber: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.lookingForCity)) {
+		if (!commonValidator(input.region)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				lookingForCity: 'Некоректнна назва міста'
+				region: errorList['commonValidator']
 			}));
 		}
 		
@@ -99,7 +167,7 @@ const CV = () => {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				company: 'Некоректнa інформація'
+				company: errorList['commonValidator']
 			}));
 		}
 		
@@ -107,23 +175,23 @@ const CV = () => {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				position: 'Некоректнa інформація'
+				positionWant: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.dateStart)) {
+		if (!commonValidator(input.workDateFrom)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				dateStart: 'Некоректнa інформація'
+				workDateFrom: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.dateEnd)) {
+		if (!commonValidator(input.workDateTo)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				dateEnd: 'Некоректнa інформація'
+				workDateTo: errorList['commonValidator']
 			}));
 		}
 		
@@ -132,39 +200,39 @@ const CV = () => {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				educationLevel: 'Некоректнa інформація'
+				educationLevel: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.school)) {
+		if (!commonValidator(input.educationPlace)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				school: 'Некоректнa інформація'
+				educationPlace: 'Некоректнa інформація'
 			}));
 		}
 		
-		if (!commonValidator(input.specialization)) {
+		if (!commonValidator(input.speciality)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				specialization: 'Некоректнa інформація'
+				speciality: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.learningDataStart)) {
+		if (!commonValidator(input.studyDateFrom)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				learningDataStart: 'Некоректнa інформація'
+				studyDateFrom: errorList['commonValidator']
 			}));
 		}
 		
-		if (!commonValidator(input.learningDataEnd)) {
+		if (!commonValidator(input.studyDateTo)) {
 			isAllCorrect = false;
 			setErrors(prev => ({
 				...prev,
-				learningDataEnd: 'Некоректнa інформація'
+				studyDateTo: errorList['commonValidator']
 			}));
 		}
 		
@@ -172,19 +240,33 @@ const CV = () => {
 			return;
 		}
 		
-		console.log('Success!---------------------');
+		const request = {
+			urlPoint: '/candidates',
+			props: {
+				email,
+				...input
+			},
+			token
+		};
 		
-		// Set user role		
-		// dispatch({
-			// type: 'setUserRole',
-			// value: forEmployee ? 'forEmployee' : 'forEmployer'
-		// });
+		setIsLoading(true);
 		
-		// console.log(store.getState());
-	};
-	
-	const buttonRemoveClickHandler = () => {
+		console.log(request.props);
 		
+		put(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
+			if (isSuccess) {				
+				setTimeout(() => {
+					alert('Success');
+				}, 0);
+				navigate('/');
+			} else {
+				setTimeout(() => {
+					alert(`Can't save. ${data.response.data.message}`);
+				}, 0);
+			}
+		});
 	};
 	
 	return (
@@ -192,200 +274,206 @@ const CV = () => {
 			<Header />
 		
 			<main className="cv-edit__main main">
-				<h2 className="main__title">Резюме редагування</h2>
+				{	!isResumeCreated
+					&&
+					<h2 className="main__title">Резюме порожнє</h2>
+				}
 				
-				<section className="main__content content">
-					<div className="content__title">
-						<h4>Візитка</h4>
-					</div>
-					
-					<ul className="content__items items">
-						<li className="items__item">
-							<span>Ім'я та прізвище:</span>
-							
-							<InputWrapper
-								name='nameSurname'
-								beginingValue={dataProps.nameSurname}
-								onChange={changeHandler}
-								errorMessage={errors?.nameSurname}
-							/>
-						</li>
+				{	isResumeCreated
+					&&
+					<>
+			
+						<h2 className="main__title">Резюме редагування</h2>
 						
-						<li className="items__item">
-							<span>Посада, на якій хочеш працювати:</span>
+						<section className="main__content content">
+							<div className="content__title">
+								<h4>Візитка</h4>
+							</div>
 							
-							<InputWrapper
-								name='lookingForPosition'
-								placeholder={dataProps.lookingForPosition}
-								onChange={changeHandler}
-								errorMessage={errors?.lookingForPosition}
-							/>
-						</li>
+							<ul className="content__items items">
+								<li className="items__item">
+									<span>Ім'я та прізвище:</span>
+									
+									<InputWrapperEdit
+										name='name'
+										beginingValue={input.name}
+										onChange={changeHandler}
+										errorMessage={errors?.name}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Посада, на якій хочеш працювати:</span>
+									
+									<InputWrapperEdit
+										name='positionWant'
+										beginingValue={input.positionWant}
+										onChange={changeHandler}
+										errorMessage={errors?.positionWant}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Дата народження:</span>
+									
+									<InputWrapperEdit
+										name='birth'
+										beginingValue={input.birth}
+										onChange={changeHandler}
+										errorMessage={errors?.birth}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Номер телефону:</span>
+									
+									<InputWrapperEdit
+										name='phoneNumber'
+										beginingValue={input.phoneNumber}
+										onChange={changeHandler}
+										errorMessage={errors?.phoneNumber}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Місто пошуку роботи:</span>
+									
+									<InputWrapperEdit
+										name='region'
+										beginingValue={input.region}
+										onChange={changeHandler}
+										errorMessage={errors?.region}
+									/>
+								</li>
+							</ul>
+						</section>
 						
-						<li className="items__item">
-							<span>Дата народження:</span>
+						<section className="main__content content">
+							<div className="content__title">
+								<h4>Досвід роботи</h4>
+								
+								<span className="content__sub-title">Додайте своє останнє місце роботи</span>
+							</div>
 							
-							<InputWrapper
-								name='birthdayDate'
-								placeholder={dataProps.birthdayDate}
-								onChange={changeHandler}
-								errorMessage={errors?.birthdayDate}
-							/>
-						</li>
+							<ul className="content__items items">
+								<li className="items__item">
+									<span>Назва компанії:</span>
+									
+									<InputWrapperEdit
+										name='company'
+										beginingValue={input.company}
+										onChange={changeHandler}
+										errorMessage={errors?.company}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Посада:</span>
+									
+									<InputWrapperEdit
+										name='position'
+										beginingValue={input.position}
+										onChange={changeHandler}
+										errorMessage={errors?.position}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Період роботи з:</span>
+									
+									<InputWrapperEdit
+										name='workDateFrom'
+										beginingValue={input.workDateFrom}
+										onChange={changeHandler}
+										errorMessage={errors?.workDateFrom}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>по:</span>
+									
+									<InputWrapperEdit
+										name='workDateTo'
+										beginingValue={input.workDateTo}
+										onChange={changeHandler}
+										errorMessage={errors?.workDateTo}
+									/>
+								</li>
+							</ul>
+						</section>
 						
-						<li className="items__item">
-							<span>Номер телефону:</span>
+						<section className="main__content content">
+							<div className="content__title">
+								<h4>Освіта</h4>
+							</div>
 							
-							<InputWrapper
-								name='phone'
-								placeholder={dataProps.phone}
-								onChange={changeHandler}
-								errorMessage={errors?.phone}
-							/>
-						</li>
+							<ul className="content__items items">
+								<li className="items__item">
+									<span>Рівень освіти:</span>
+									
+									<InputWrapperEdit
+										name='educationLevel'
+										beginingValue={input.educationLevel}
+										onChange={changeHandler}
+										errorMessage={errors?.educationLevel}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Навчальний заклад:</span>
+									
+									<InputWrapperEdit
+										name='educationPlace'
+										beginingValue={input.educationPlace}
+										onChange={changeHandler}
+										errorMessage={errors?.educationPlace}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Спеціальність:</span>
+									
+									<InputWrapperEdit
+										name='speciality'
+										beginingValue={input.speciality}
+										onChange={changeHandler}
+										errorMessage={errors?.speciality}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>Період навчання з:</span>
+									
+									<InputWrapperEdit
+										name='studyDateFrom'
+										beginingValue={input.studyDateFrom}
+										onChange={changeHandler}
+										errorMessage={errors?.studyDateFrom}
+									/>
+								</li>
+								
+								<li className="items__item">
+									<span>по:</span>
+									
+									<InputWrapperEdit
+										name='studyDateTo'
+										beginingValue={input.studyDateTo}
+										onChange={changeHandler}
+										errorMessage={errors?.studyDateTo}
+									/>
+								</li>
+							</ul>
+						</section>
 						
-						<li className="items__item">
-							<span>Місто пошуку роботи:</span>
-							
-							<InputWrapper
-								name='lookingForCity'
-								placeholder={dataProps.lookingForCity}
-								onChange={changeHandler}
-								errorMessage={errors?.lookingForCity}
+						<div className="main__button">
+							<Button 
+								text='Зберегти'
+								clickHandler={buttonSaveClickHandler}
 							/>
-						</li>
-					</ul>
-				</section>
-				
-				<section className="main__content content">
-					<div className="content__title">
-						<h4>Досвід роботи</h4>
-						
-						<span className="content__sub-title">Додайте своє останнє місце роботи</span>
-					</div>
-					
-					<ul className="content__items items">
-						<li className="items__item">
-							<span>Назва компанії:</span>
-							
-							<InputWrapper
-								name='company'
-								placeholder={dataProps.company}
-								onChange={changeHandler}
-								errorMessage={errors?.company}
-							/>
-						</li>
-						
-						<li className="items__item">
-							<span>Посада:</span>
-							
-							<InputWrapper
-								name='position'
-								placeholder={dataProps.position}
-								onChange={changeHandler}
-								errorMessage={errors?.position}
-							/>
-						</li>
-						
-						<li className="items__item">
-							<span>Період роботи з:</span>
-							
-							<InputWrapper
-								name='dateStart'
-								placeholder={dataProps.dateStart}
-								onChange={changeHandler}
-								errorMessage={errors?.dateStart}
-							/>
-						</li>
-						
-						<li className="items__item">
-							<span>по:</span>
-							
-							<InputWrapper
-								name='dateEnd'
-								placeholder={dataProps.dateEnd}
-								onChange={changeHandler}
-								errorMessage={errors?.dateEnd}
-							/>
-						</li>
-					</ul>
-				</section>
-				
-				<section className="main__content content">
-					<div className="content__title">
-						<h4>Освіта</h4>
-					</div>
-					
-					<ul className="content__items items">
-						<li className="items__item">
-							<span>Рівень освіти:</span>
-							
-							<InputWrapper
-								name='educationLevel'
-								placeholder={dataProps.educationLevel}
-								onChange={changeHandler}
-								errorMessage={errors?.educationLevel}
-							/>
-						</li>
-						
-						<li className="items__item">
-							<span>Навчальний заклад:</span>
-							
-							<InputWrapper
-								name='school'
-								placeholder={dataProps.school}
-								onChange={changeHandler}
-								errorMessage={errors?.school}
-							/>
-						</li>
-						
-						<li className="items__item">
-							<span>Спеціальність:</span>
-							
-							<InputWrapper
-								name='specialization'
-								placeholder={dataProps.specialization}
-								onChange={changeHandler}
-								errorMessage={errors?.specialization}
-							/>
-						</li>
-						
-						<li className="items__item">
-							<span>Період навчання з:</span>
-							
-							<InputWrapper
-								name='learningDataStart'
-								placeholder={dataProps.learningDataStart}
-								onChange={changeHandler}
-								errorMessage={errors?.learningDataStart}
-							/>
-						</li>
-						
-						<li className="items__item">
-							<span>по:</span>
-							
-							<InputWrapper
-								name='learningDataEnd'
-								placeholder={dataProps.learningDataEnd}
-								onChange={changeHandler}
-								errorMessage={errors?.learningDataEnd}
-							/>
-						</li>
-					</ul>
-				</section>
-				
-				<div className="main__button">
-					<Button 
-						text='Зберегти'
-						clickHandler={buttonSaveClickHandler}
-					/>
-					
-					<Button 
-						text='Видалити'
-						clickHandler={buttonRemoveClickHandler}
-					/>
-				</div>
-			</main>
+						</div>
+					</>
+					}
+					</main>
 			
 			<Footer />
 		</section>

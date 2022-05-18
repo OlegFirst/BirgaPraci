@@ -2,9 +2,7 @@ import axios from 'axios';
 import { url } from '../constants/main';
 
 // Sign in / up
-export const sign = ({ urlPoint, props }, readed) => {
-	console.log('sign', urlPoint, props);
-	
+export const sign = ({ urlPoint, props }, readed) => {	
 	axios
 		.post(url + urlPoint, props)
 		.then(res => {
@@ -32,8 +30,6 @@ export const instance = axios.create({
 
 // Get method
 export const get = ({ urlPoint, token }, readed) => {
-	console.log(url + urlPoint, token);
-		
 	axios
 		.get(url + urlPoint, {
 			headers: {
@@ -57,6 +53,32 @@ export const get = ({ urlPoint, token }, readed) => {
 // Post method
 export const post = ({ urlPoint, props, token }, readed) => {
 	console.log(urlPoint, props, token);
+	
+	axios
+		.post(url + urlPoint, props, {
+			headers: {
+				Authorization: 'Bearer ' + token
+			}
+		})
+		.then(res => {
+			readed({
+				isSuccess: true,
+				data: null
+			});
+		})
+		.catch(err => {
+			readed({
+				isSuccess: false,
+				data: err
+			});
+		});
+};
+
+// Pur method. Update
+export const put = ({ urlPoint, props, token }, readed) => {
+	console.log(urlPoint, props, token);
+	
+	// return;
 	
 	axios
 		.post(url + urlPoint, props, {

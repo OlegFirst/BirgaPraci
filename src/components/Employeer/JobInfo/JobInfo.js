@@ -125,11 +125,10 @@ const JobInfo = () => {
 							
 							<div className="main__button">
 								<Link
-									to={'#'}
+									to={'/edit-job'}
 									className="button"
-									onClick={deleteButtonHandler}
 								>
-									Delete
+									Редагувати
 								</Link>
 							</div>
 						</div>
@@ -141,26 +140,3 @@ const JobInfo = () => {
 }
 
 export default JobInfo;
-
-// <div className="main__block block edit">
-					// <Button 
-						// text='Редагувати'
-						// clickHandler={buttonClickHandler}
-					// />
-				// </div>
-				
-				
-				// <div className="main__block block others">
-							// <span className="bold">вимоги: </span>
-							// <span>{jobInfo.description}</span>
-						// </div>
-						
-						// <div className="main__block block others">
-							// <span className="bold">умови роботи: </span>
-							// <span>{}</span>
-						// </div>
-						
-						// <div className="main__block block others">
-							// <span className="bold">зобов'язання: </span>
-							// <span>{}</span>
-						// </div>

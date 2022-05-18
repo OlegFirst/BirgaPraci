@@ -4,22 +4,22 @@ Employee -> signIn
 Employeer -> signUp
 Employeer -> signIn
 - CV create
-
+- CV ( show )
+- Employeer vacancy creates
 
 Check: -----------------------------------------------
-CV ( creation )
-
 - Find a work
-- CV remove
-- vacancy delete
-- CV ( show )
+
 
 TO DO: -------------------------------------------------
-- reducer data fix
-- create only one CV
-- CV remove & create
 - CV edit
 - Search hides
+- Employeer vacancy edits
+
+
+
+
+
 
 Employee ---------------------------------------------------
 email:
