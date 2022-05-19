@@ -1,21 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../Header/Header';
-import InputWrapper from '../../_commonComponents/InputWrapper/InputWrapper';
-import TextareaWrapper from '../../_commonComponents/TextareaWrapper/TextareaWrapper';
+import InputWrapperEdit from '../../_commonComponents/InputWrapperEdit/InputWrapperEdit';
+import TextareaWrapperEdit from '../../_commonComponents/TextareaWrapperEdit/TextareaWrapperEdit';
 import CreateJobFilter from '../CreateJob/CreateJobFilter';
 import Button from '../../_commonComponents/Button/Button';
 import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 import Footer from '../../Footer/Footer';
 
-import { post } from '../../../services';
 import { 
 	commonValidator,
 	salaryValidator,
 	errorList
 } from '../../../services/validations';
+
+import { 
+	get,
+	put
+} from '../../../services';
 
 const EditJob = () => {
 	const data = {
@@ -29,14 +33,45 @@ const EditJob = () => {
 		description: ''
 	};
 	
+	const [jobInfo, setJobInfo] = useState({...data});
+	const [isCreated, setIsCreated] = useState(false);
 	const [input, setInput] = useState({...data});
 	const [errors, setErrors] = useState(null);
 	
 	const email = useSelector(state => state.email);
 	const token = useSelector(state => state.token);
+	const dataVacancies = useSelector(state => state.vacancies);
 	const createJobFilterActivity = useSelector(state => state.createJobFilterActivity);
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
+	
+	useEffect(() => {
+		if (!dataVacancies) {
+			return;
+		}
+		
+		const {
+			eployeerName,
+			number,
+			position,
+			place,
+			type,
+			salaryMin,
+			salaryMax,
+			description
+		} = dataVacancies;
+		
+		setInput({
+			eployeerName,
+			number,
+			position,
+			place,
+			type,
+			salaryMin,
+			salaryMax,
+			description
+		});
+	}, [dataVacancies]);
 	
 	const changeHandler = e => {		
 		const { name, value } = e.target;
@@ -138,7 +173,7 @@ const EditJob = () => {
 		
 		setIsLoading(true);
 		
-		post(request, ({ isSuccess, data }) => {
+		put(request, ({ isSuccess, data }) => {
 			setIsLoading(false);
 			
 			if (isSuccess) {
@@ -159,14 +194,15 @@ const EditJob = () => {
 			<Header />
 		
 			<main className="create-job__main main">
-				<h1 className="main__title">Створити вакансію</h1>
+				<h1 className="main__title">Редагування вакансії</h1>
 				
 				<ul className="main__items items">
 					<li className="items__item">
 						<span>Роботодавець:</span>
 					
-						<InputWrapper
+						<InputWrapperEdit
 							name='eployeerName'
+							beginingValue={input.eployeerName}
 							placeholder={''}
 							onChange={changeHandler}
 							errorMessage={errors?.eployeerName}
@@ -176,8 +212,9 @@ const EditJob = () => {
 					<li className="items__item">
 						<span>Телефон:</span>
 					
-						<InputWrapper
+						<InputWrapperEdit
 							name='number'
+							beginingValue={input.number}
 							placeholder={''}
 							onChange={changeHandler}
 							errorMessage={errors?.number}
@@ -187,8 +224,9 @@ const EditJob = () => {
 					<li className="items__item">
 						<span>Посада:</span>
 					
-						<InputWrapper
+						<InputWrapperEdit
 							name='position'
+							beginingValue={input.position}
 							placeholder={''}
 							onChange={changeHandler}
 							errorMessage={errors?.position}
@@ -198,8 +236,9 @@ const EditJob = () => {
 					<li className="items__item">
 						<span>Місто роботи:</span>
 					
-						<InputWrapper
+						<InputWrapperEdit
 							name='place'
+							beginingValue={input.place}
 							placeholder={''}
 							onChange={changeHandler}
 							errorMessage={errors?.place}
@@ -216,15 +255,17 @@ const EditJob = () => {
 						<span>Зарплата на цій посаді:</span>
 						
 						<div className="salary">
-							<InputWrapper
+							<InputWrapperEdit
 								name='salaryMin'
+								beginingValue={input.salaryMin}
 								placeholder={'Від'}
 								onChange={changeHandler}
 								errorMessage={errors?.salaryMin}
 							/>
 							
-							<InputWrapper
+							<InputWrapperEdit
 								name='salaryMax'
+								beginingValue={input.salaryMax}
 								placeholder={'До'}
 								onChange={changeHandler}
 								errorMessage={errors?.salaryMax}
@@ -235,8 +276,9 @@ const EditJob = () => {
 					<li className="items__item description">
 						<span>Опишість вакансію:</span>
 					
-						<TextareaWrapper
+						<TextareaWrapperEdit
 							name='description'
+							beginingValue={input.description}
 							placeholder={'Вимоги. Умови роботи. Обов`язки'}
 							onChange={changeHandler}
 							errorMessage={errors?.description}

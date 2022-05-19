@@ -1,26 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import useRequest from '../../services/loadingHook';
+import { getVacancies, get } from '../../services';
 
 import Header from '../Header/Header';
 import FindWork from '../_commonComponents/FindWork/FindWork';
 import Footer from '../Footer/Footer';
 import FindWorkResults from '../_commonComponents/FindWorkResults/FindWorkResults';
+import LoadingMessage from '../_commonComponents/LoadingMessage/LoadingMessage';
 
 const MainPage = () => {
-	const vacancies = useSelector(state => state.vacancies);
+	const [vacanciesAll, setVacanciesAll] = useState([]);
 	const [findWorkResults, setFindWorkResults] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const token = useSelector(state => state.token);
 	
-	// Getting vacancies from server
-	// const { isLoading } = useRequest({
-		// url: '/vacancies',
-		// type: 'setVacancies',
-		// dataKey: 'vacancies'
-	// });
-	
-	// if (isLoading) {
-		// return <h3>Loading...</h3>;
-	// }
+	useEffect(() => {
+		const request = {
+			urlPoint: '/vacancies/all'
+		};
+		
+		setIsLoading(true);
+		
+		getVacancies(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
+			if (isSuccess) {
+				setVacanciesAll(data.vacancies);
+			} else {
+				setTimeout(() => {
+					alert(`Can't load data. ${data.response.data.message}`);
+				}, 0);
+			}
+		});
+	}, []);
 	
 	// Work searching results
 	const findWorkResponseHandler = data => {
@@ -36,7 +48,7 @@ const MainPage = () => {
 				
 				<div className="main__find">
 					<FindWork
-						vacanciesList={vacancies}
+						vacanciesList={vacanciesAll}
 						findWorkResponse={findWorkResponseHandler}
 					/>
 				</div>
@@ -49,6 +61,8 @@ const MainPage = () => {
 			</main>
 			
 			<Footer />
+			
+			<LoadingMessage isShow={isLoading} />
 		</section>
 	);
 }

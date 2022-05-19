@@ -7,14 +7,16 @@ Employeer -> signIn
 - CV ( show )
 - CV edit
 - Employeer vacancy creates
+- Employeer vacancy edits
 
 Check: -----------------------------------------------
 - Find a work
+- CV edit, CV create
 
 
 TO DO: -------------------------------------------------
 - Search hides
-- Employeer vacancy edits
+
 
 
 
@@ -40,3 +42,7 @@ proba1@gmail.com
 
 password:
 qwert1234
+
+
+bugalter
+Lviv

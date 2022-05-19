@@ -14,6 +14,7 @@ const defaultState = {
 		businessCard: {}
 	},
 	
+	vacanciesAll: null,
 	vacancies: null,
 	
 	filterSalary: null,	
@@ -44,16 +45,17 @@ function reducer(state = defaultState, action) {
 			};
 			
 		case 'setVacancies':
+			// Vacancies
 			return {
 				...state,
 				vacancies: action.value
-			}
+			};
 			
 		case 'setFilterSalary':			
 			return {
 				...state,
 				filterSalary: action.value
-			}			
+			}		
 		case 'setFilterAction':			
 			return {
 				...state,

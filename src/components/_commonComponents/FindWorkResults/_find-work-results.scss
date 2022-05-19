@@ -1,5 +1,7 @@
 .find-work-results {
 	position: relative;
+	background-color: white;
+	z-index: 1;
 			
 	& > .find-work-results {					
 		&__items {
@@ -28,6 +30,7 @@
 		overflow: scroll;
 		
 		& > div.selected {
+			z-index: 10;
 			background-color: $color-white;
 			border: 3px solid $color-grey;
 			margin-top: 40px;

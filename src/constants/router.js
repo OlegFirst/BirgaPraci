@@ -44,9 +44,5 @@ export const employeerArray = [
 	{
 		text: 'Подивись на вакансію',
 		path: '/show-job'
-	},
-	{
-		text: 'Подивись резюме',
-		path: '/find-resume'
 	}
 ];

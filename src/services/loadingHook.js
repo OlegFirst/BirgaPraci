@@ -17,15 +17,15 @@ function useRequest({ url, type, method='GET', dataKey }) {
 					method
 				});
 				
-				dispatch({ 
-					type,
-					value: response.data[dataKey]
-				});
+				// dispatch({ 
+					// type,
+					// value: response.data[dataKey]
+				// });
 			} catch(e) {				
-				dispatch({ 
-					type,
-					value: null
-				});
+				// dispatch({ 
+					// type,
+					// value: null
+				// });
 			} finally {
 				setIsLoading(false);
 			}
