@@ -5,6 +5,7 @@ Employeer -> signUp
 Employeer -> signIn
 - CV create
 - CV ( show )
+- CV edit
 - Employeer vacancy creates
 
 Check: -----------------------------------------------
@@ -12,7 +13,6 @@ Check: -----------------------------------------------
 
 
 TO DO: -------------------------------------------------
-- CV edit
 - Search hides
 - Employeer vacancy edits
 

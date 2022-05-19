@@ -36,6 +36,8 @@ const data = {
 	studyDateTo: ''
 };
 
+let isCVChanged = false;
+
 const CV = () => {
 	const [input, setInput] = useState({...data});	
 	const [errors, setErrors] = useState(null);
@@ -43,6 +45,8 @@ const CV = () => {
 	const [isResumeCreated, setIsResumeCreated] = useState(false);
 	
 	useEffect(() => {
+		isCVChanged = false;
+		
 		const request = {
 			urlPoint: '/candidates',
 			token
@@ -104,6 +108,8 @@ const CV = () => {
 	const navigate = useNavigate();
 	
 	const changeHandler = e => {
+		isCVChanged = true;
+		
 		const { name, value } = e.target;
 		
 		setInput(prev => ({
@@ -240,6 +246,12 @@ const CV = () => {
 			return;
 		}
 		
+		if (!isCVChanged) {
+			alert('Success');
+			navigate('/');
+			return;
+		}
+		
 		const request = {
 			urlPoint: '/candidates',
 			props: {
@@ -250,8 +262,6 @@ const CV = () => {
 		};
 		
 		setIsLoading(true);
-		
-		console.log(request.props);
 		
 		put(request, ({ isSuccess, data }) => {
 			setIsLoading(false);

@@ -52,11 +52,12 @@ const CVShow = () => {
 			setIsLoading(false);
 			
 			if (isSuccess) {				
-				const candidates = data.candidates;
+				const candidates = data.candidates;				
+				const len = candidates.length
 				
-				if (candidates.length > 0) {
+				if (len > 0) {
 					setIsResumeCreated(true);
-					setResumeInfo(data.candidates[0]);
+					setResumeInfo(data.candidates[len - 1]);
 					
 					cvId = candidates[0]._id;
 				} else {
