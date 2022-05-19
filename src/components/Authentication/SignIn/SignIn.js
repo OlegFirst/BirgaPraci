@@ -6,6 +6,7 @@ import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
 import IconInputWrapper from '../../_commonComponents/IconInputWrapper/IconInputWrapper';
 import Button from '../../_commonComponents/Button/Button';
+import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 
 import {
 	mailValidator,
@@ -26,7 +27,8 @@ const SignIn = () => {
 	const [errors, setErrors] = useState({
 		mail: '',
 		password: ''
-	});
+	});	
+	const [isLoading, setIsLoading] = useState(false);
 	
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -48,7 +50,7 @@ const SignIn = () => {
 	
 	// Validating data
 	const buttonClickHandler = () => {		
-		// // - Validating input fields
+		// - Validating input fields
 		let isAllCorrect = true;
 		setErrors({
 			mail: '',
@@ -82,12 +84,14 @@ const SignIn = () => {
 				email: input.mail,
 				password: input.password
 			}
-		}
+		};
 		
-		sign(request, ({ isSuccess, data }) => {				
-			if (isSuccess) {
-				console.log('SignIn', data.token)
-				
+		setIsLoading(true);
+		
+		sign(request, ({ isSuccess, data }) => {
+			setIsLoading(false);
+			
+			if (isSuccess) {				
 				// - Saving data to the Storage	
 				dispatch({
 					type: 'setToken',
@@ -101,7 +105,10 @@ const SignIn = () => {
 					type: 'setUserRole',
 					value: forEmployee ? 'forEmployee' : 'forEmployeer'
 				});
-				alert('Success!');
+				
+				setTimeout(() => {
+					alert('Success!');
+				}, 0);
 				navigate('/');
 			} else {
 				// - Saving data to the Storage	
@@ -117,7 +124,10 @@ const SignIn = () => {
 					type: 'setUserRole',
 					value: 'undefined'
 				});
-				alert(`Error. ${data.response.data.message}`);
+				
+				setTimeout(() => {
+					alert(`Error. ${data.response.data.message}`);
+				}, 0);
 			}
 		});
 	};
@@ -192,6 +202,8 @@ const SignIn = () => {
 					</span>
 				}
 			</div>
+			
+			<LoadingMessage isShow={isLoading} />
 		</section>
 	);
 }

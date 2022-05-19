@@ -12,15 +12,15 @@ const MainPage = () => {
 	const [findWorkResults, setFindWorkResults] = useState(null);
 	
 	// Getting vacancies from server
-	const { isLoading } = useRequest({
-		url: '/vacancies',
-		type: 'setVacancies',
-		dataKey: 'vacancies'
-	});
+	// const { isLoading } = useRequest({
+		// url: '/vacancies',
+		// type: 'setVacancies',
+		// dataKey: 'vacancies'
+	// });
 	
-	if (isLoading) {
-		return <h3>Loading...</h3>;
-	}
+	// if (isLoading) {
+		// return <h3>Loading...</h3>;
+	// }
 	
 	// Work searching results
 	const findWorkResponseHandler = data => {

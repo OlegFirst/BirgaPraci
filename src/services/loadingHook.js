@@ -17,8 +17,6 @@ function useRequest({ url, type, method='GET', dataKey }) {
 					method
 				});
 				
-				console.log(console.log(response))
-				
 				dispatch({ 
 					type,
 					value: response.data[dataKey]

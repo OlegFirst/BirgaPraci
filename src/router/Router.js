@@ -23,6 +23,7 @@ import JobSearchTips from '../components/Employee/JobSearchTips/JobSearchTips';
 // Employeer
 import CreateJob from '../components/Employeer/CreateJob/CreateJob';
 import JobInfo from '../components/Employeer/JobInfo/JobInfo';
+import EditJob from '../components/Employeer/EditJob/EditJob';
 
 const Router = () => (
 	<BrowserRouter>
@@ -41,6 +42,7 @@ const Router = () => (
 			<Route path={employeeArray[3].path} element={<JobSearchTips />} />
 			
 			<Route path={employeerArray[0].path} element={<CreateJob />} />
+			<Route path={'edit-job'} element={<EditJob />} />
 			
 			<Route element={<NotFound />} />
 		</Routes>

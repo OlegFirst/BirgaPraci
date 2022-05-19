@@ -27,23 +27,47 @@ export const jobInfo = {
 	obligation: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum'
 };
 
-export const resumeInfo = {
-	nameSurname: 'Ivan Pupkin',
-	birthdayDate: '01.02.2024',
-	phone: '024154214',
-	lookingForPosition: 'бухгалтер',
-	lookingForCity: 'Lviv',
+// const data = {
+		// name: '',
+		// birth: '',
+		// phoneNumber: '',
+		// positionWant: '',
+		// region: '',
 	
-	company: 'BMW',
+		// company: '',
+		// position: '',
+		// workDateFrom: '',
+		// workDateTo: '',
+
+		// educationLevel: '',
+		// educationPlace: '',
+		// speciality: '',
+		// studyDateFrom: '',
+		// studyDateTo: ''
+	// };
+
+export const resumeInfo = {
+	name: 'Ivan Pupkin',
+	birth: '01.02.2024',
+	phoneNumber: '024154214',
+	positionWant: 'бухгалтер',
+	region: 'Lviv',
+	
+	company: 'BMWyt',
 	position: 'slusar',
-	dateStart: '02.02.2014',
-	dateEnd: '02.04.2014',
+	workDateFrom: '02.02.2014',
+	workDateTo: '02.04.2014',
 
 	educationLevel: 'Univarsity',
-	school: 'Secondary',
-	specialization: 'engeneer',
-	learningDataStart: '02.02.2014',
-	learningDataEnd: '02.02.2014'
+	educationPlace: 'Secondary',
+	speciality: 'engeneer',
+	studyDateFrom: '02.02.2014',
+	studyDateTo: '02.02.2014'
 };
 
+// Local hosting
+// To run type: npm run start:dev
+// export const url = 'http://localhost:4343/api/v1';
+
+// Heroku hosting
 export const url = 'https://refugees-work.herokuapp.com/api/v1';

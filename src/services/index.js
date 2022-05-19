@@ -2,13 +2,11 @@ import axios from 'axios';
 import { url } from '../constants/main';
 
 // Sign in / up
-export const sign = ({ urlPoint, props }, readed) => {
-	console.log(urlPoint, props);
-	
+export const sign = ({ urlPoint, props }, readed) => {	
 	axios
 		.post(url + urlPoint, props)
 		.then(res => {
-			console.log(res, res.data)
+			console.log('sign OK', res);
 			
 			readed({
 				isSuccess: true,
@@ -16,6 +14,8 @@ export const sign = ({ urlPoint, props }, readed) => {
 			});
 		})
 		.catch(err => {
+			console.log('sign False', err);
+			
 			readed({
 				isSuccess: false,
 				data: err
@@ -30,8 +30,6 @@ export const instance = axios.create({
 
 // Get method
 export const get = ({ urlPoint, token }, readed) => {
-	console.log(url + urlPoint, token);
-		
 	axios
 		.get(url + urlPoint, {
 			headers: {
@@ -76,10 +74,35 @@ export const post = ({ urlPoint, props, token }, readed) => {
 		});
 };
 
+// Pur method. Update
+export const put = ({ urlPoint, props, token }, readed) => {
+	console.log(urlPoint, props, token);
+	
+	// return;
+	
+	axios
+		.post(url + urlPoint, props, {
+			headers: {
+				Authorization: 'Bearer ' + token
+			}
+		})
+		.then(res => {
+			readed({
+				isSuccess: true,
+				data: null
+			});
+		})
+		.catch(err => {
+			readed({
+				isSuccess: false,
+				data: err
+			});
+		});
+};
+
 // Delete method
 export const deleteMethod = ({ urlPoint, token }, readed) => {
-	console.log(url + urlPoint, token);
-	
+	console.log(url + urlPoint, token);	
 	
 	axios
 		.delete(url + urlPoint, {

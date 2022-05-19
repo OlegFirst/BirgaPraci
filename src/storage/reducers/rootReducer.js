@@ -6,7 +6,6 @@ import { roleList } from '../../constants/state';
 const defaultState = {
 	isSuccess: null,
 	roleKey: 'undefined',
-	// roleKey: 'forEmployeer',
 	roleText: 'undefined',
 	token: null,
 	email: null,

@@ -1,10 +1,11 @@
 .create-job {
 	& > main.create-job__main {
 		padding: 20px 40px;
+		margin: 0 auto;
+		width: 700px;
 		
 		& > .main {
 			&__title {
-				margin-top: 50px;
 				text-align: center;
 			}
 			

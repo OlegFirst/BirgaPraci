@@ -1,4 +1,4 @@
-const InputWrapper = ({ name, type='text', placeholder, onChange, errorMessage='' }) => {
+const InputWrapper = ({ name, type='text', placeholder, beginingValue='', onChange, errorMessage='' }) => {
 	return (
 		<div className="input-wrapper">
 			<input
@@ -6,6 +6,7 @@ const InputWrapper = ({ name, type='text', placeholder, onChange, errorMessage='
 				type={type}
 				name={name}
 				placeholder={placeholder}
+				value={beginingValue}
 				onChange={onChange}
 			/>
 			

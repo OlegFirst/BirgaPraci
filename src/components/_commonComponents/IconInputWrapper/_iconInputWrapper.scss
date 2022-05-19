@@ -1,6 +1,7 @@
 .icon-input-wrapper {
 	position: relative;
 	@include flex();
+	justify-content: flex-start;
 	border: 3px solid $color-grey;
 	border-radius: 4px;
 	padding: 5px;

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../Header/Header';
 import InputWrapper from '../../_commonComponents/InputWrapper/InputWrapper';
 import TextareaWrapper from '../../_commonComponents/TextareaWrapper/TextareaWrapper';
-import CreateJobFilter from './CreateJobFilter';
+import CreateJobFilter from '../CreateJob/CreateJobFilter';
 import Button from '../../_commonComponents/Button/Button';
 import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 import Footer from '../../Footer/Footer';
@@ -17,7 +17,7 @@ import {
 	errorList
 } from '../../../services/validations';
 
-const CreateJob = () => {
+const EditJob = () => {
 	const data = {
 		eployeerName: '',
 		number: '',
@@ -259,4 +259,4 @@ const CreateJob = () => {
 	);
 }
 
-export default CreateJob;
+export default EditJob;
