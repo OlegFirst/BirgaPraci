@@ -5,9 +5,7 @@ import { url } from '../constants/main';
 export const sign = ({ urlPoint, props }, readed) => {	
 	axios
 		.post(url + urlPoint, props)
-		.then(res => {
-			console.log('sign OK', res);
-			
+		.then(res => {			
 			readed({
 				isSuccess: true,
 				data: res.data
@@ -92,9 +90,7 @@ export const post = ({ urlPoint, props, token }, readed) => {
 };
 
 // Pur method. Update
-export const put = ({ urlPoint, props, token }, readed) => {
-	// console.log(urlPoint, props, token);
-	
+export const put = ({ urlPoint, props, token }, readed) => {	
 	axios
 		.post(url + urlPoint, props, {
 			headers: {

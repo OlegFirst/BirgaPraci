@@ -33,6 +33,14 @@ export const employeeArray = [
 	{
 		text: 'Поради при пошуку роботи',
 		path: '/job-serch-tips'
+	},
+	{
+		text: 'Подивись на всі вакансії',
+		path: '/show-all-vacancies'
+	},	
+	{
+		text: 'Подивись на збережені вакансії',
+		path: '/show-saved-vacancies'
 	}
 ];
 

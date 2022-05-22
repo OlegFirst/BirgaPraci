@@ -1,11 +1,16 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import JobCard from '../../_commonComponents/JobCard/JobCard';
 import Button from '../../_commonComponents/Button/Button';
 
-const FindWorkResults = ({ data }) => {	
+import { post } from '../../../services';
+
+const FindWorkResults = ({ data, canBeSaved=true }) => {	
 	const [isSelectedShow, setIsSelectedShow] = useState(false);
 	const [selectedCardInfo, setSelectedCardInfo] = useState({});
+	
+	const token = useSelector(state => state.token);
 	
 	if (!data) {
 		return;
@@ -20,8 +25,8 @@ const FindWorkResults = ({ data }) => {
 		setIsSelectedShow(true);
 	};
 	
-	const items = data.map((item, index) => {
-		const { position, salaryMin, salaryMax, type, description } = item;
+	const items = data.map((item, index) => {		
+		const { eployeerName, salaryMin, salaryMax, type, description } = item;
 		
 		return (
 			<li
@@ -30,7 +35,7 @@ const FindWorkResults = ({ data }) => {
 				onClick={() => jobCardSelected(item)}
 			>
 				<JobCard
-					name={position}
+					eployeerName={eployeerName}
 					salaryMin={salaryMin}
 					salaryMax={salaryMax}
 					type={type}
@@ -39,6 +44,46 @@ const FindWorkResults = ({ data }) => {
 			</li>
 		);
 	});
+	
+	const saveVacancy = () => {
+		const {
+			eployeerName,
+			number,
+			position,
+			salarMax,
+			type,
+			place,
+			description
+		} = selectedCardInfo;
+		
+		const request = {
+			urlPoint: '/favorites',
+			props: {
+				eployeerName,
+				number,
+				position,
+				salarMax,
+				type,
+				place,
+				description
+			},
+			token
+		};
+		
+		post(request, ({ isSuccess, data }) => {
+			if (isSuccess) {
+				setTimeout(() => {
+					alert('Success');
+				}, 0);
+			} else {
+				setTimeout(() => {
+					alert(`Can't save. ${data.response.data.message}`);
+				}, 0);
+			}
+		});
+		
+		setIsSelectedShow(false);
+	};
 	
 	const applyOffer = () => {
 		setIsSelectedShow(false);
@@ -76,6 +121,14 @@ const FindWorkResults = ({ data }) => {
 						<p className="selected__item selected__requirements">{selectedCardInfo?.description}</p>
 						
 						<div className="selected__button-wrapper">
+							{	canBeSaved
+								&&
+								<Button
+									text='Зберегти вакансію'
+									clickHandler={saveVacancy}
+								/>
+							}
+							
 							<Button
 								text='Надіслати заявку'
 								clickHandler={applyOffer}

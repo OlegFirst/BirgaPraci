@@ -27,12 +27,21 @@ const Header = () => {
 				<div className="header__right right">
 					{	roleKey === 'forEmployee'
 						&&
-						<Link
-							to={employeeArray[2].path}
-							className="right__look-application"
-						>
-							{employeeArray[2].text}
-						</Link>					
+						<>
+							<Link
+								to={employeeArray[2].path}
+								className="right__look-application"
+							>
+								{employeeArray[2].text}
+							</Link>
+							
+							<Link
+								to={employeeArray[5].path}
+								className="right__look-application"
+							>
+								{employeeArray[5].text}
+							</Link>
+						</>
 					}
 				
 					<p className="right__role">{roleText}</p>

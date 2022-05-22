@@ -66,7 +66,7 @@ const JobInfo = () => {
 			<main className="job-info__main main">
 				{	!isCreated
 						&&
-						<h2 className="main__title">Резюме порожнє</h2>
+						<h2 className="main__title">Empty</h2>
 					}
 					
 				{	isCreated
@@ -103,15 +103,6 @@ const JobInfo = () => {
 									className="button"
 								>
 									OK
-								</Link>
-							</div>
-							
-							<div className="main__button">
-								<Link
-									to={'/edit-job'}
-									className="button"
-								>
-									Редагувати
 								</Link>
 							</div>
 						</div>
