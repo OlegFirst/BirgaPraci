@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useRequest from '../../../services/loadingHook';
 
@@ -9,23 +9,29 @@ import FindWorkResults from '../../_commonComponents/FindWorkResults/FindWorkRes
 import Button from '../../_commonComponents/Button/Button';
 import Footer from '../../Footer/Footer';
 
+import { getVacancies, get } from '../../../services';
+
 const FindJob = () => {
+	const [vacancies, setVacancies] = useState([]);
 	const [filterOptions, setFilterOptions] = useState(null);
 	const [findWorkResults, setFindWorkResults] = useState(null);
 	const [isSelectedShow, setIsSelectedShow] = useState(false);
-	
-	const vacancies = useSelector(state => state.vacancies);
-	
-	// Getting vacancies from server
-	const { isLoading } = useRequest({
-		url: '/vacancies',
-		type: 'setVacancies',
-		dataKey: 'vacancies'
-	});
-	
-	if (isLoading) {
-		return <h3>Loading...</h3>;
-	}	
+
+	useEffect(() => {
+		const request = {
+			urlPoint: '/vacancies/all'
+		};
+		
+		getVacancies(request, ({ isSuccess, data }) => {
+			if (isSuccess) {
+				setVacancies(data.vacancies);
+			} else {
+				setTimeout(() => {
+					alert(`Can't load data. ${data.response.data.message}`);
+				}, 0);
+			}
+		});
+	}, []);
 	
 	// Work searching results
 	const findWorkResponseHandler = data => {

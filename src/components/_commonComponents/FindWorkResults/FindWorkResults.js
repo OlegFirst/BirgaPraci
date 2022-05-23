@@ -6,7 +6,7 @@ import Button from '../../_commonComponents/Button/Button';
 
 import { post } from '../../../services';
 
-const FindWorkResults = ({ data, canBeSaved=true }) => {	
+const FindWorkResults = ({ data, canBeSaved=true }) => {
 	const [isSelectedShow, setIsSelectedShow] = useState(false);
 	const [selectedCardInfo, setSelectedCardInfo] = useState({});
 	
@@ -26,8 +26,6 @@ const FindWorkResults = ({ data, canBeSaved=true }) => {
 	};
 	
 	const items = data.map((item, index) => {		
-		const { eployeerName, salaryMin, salaryMax, type, description } = item;
-		
 		return (
 			<li
 				className="items__item item"
@@ -35,11 +33,7 @@ const FindWorkResults = ({ data, canBeSaved=true }) => {
 				onClick={() => jobCardSelected(item)}
 			>
 				<JobCard
-					eployeerName={eployeerName}
-					salaryMin={salaryMin}
-					salaryMax={salaryMax}
-					type={type}
-					description={description}					
+					item = {item}
 				/>
 			</li>
 		);

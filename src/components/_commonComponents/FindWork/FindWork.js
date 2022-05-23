@@ -14,6 +14,8 @@ const FindWork = ({ vacanciesList, filterOptions=null, findWorkResponse }) => {
 	const filterSalary = useSelector(state => state.filterSalary);
 	const filterActivity = useSelector(state => state.filterActivity);
 	const dispatch = useDispatch();
+
+	console.log(vacanciesList)
 	
 	// Get data and save using 'name' for recognizing
 	const changeHandler = e => {		
