@@ -1,6 +1,6 @@
 const JobCard = ( props ) => {
 	const { 
-		name,
+		eployeerName,
 		salaryMin,
 		salaryMax,
 		type, 
@@ -9,7 +9,7 @@ const JobCard = ( props ) => {
 	
 	return (
 		<div className="job-card">
-			<h4 className="job-card__title">{name}</h4>
+			<h4 className="job-card__title">{eployeerName}</h4>
 			
 			<p>{salaryMin} - {salaryMax}</p>
 			

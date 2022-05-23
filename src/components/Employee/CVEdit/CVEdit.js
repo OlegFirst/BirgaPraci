@@ -8,7 +8,6 @@ import Footer from '../../Footer/Footer';
 import LoadingMessage from '../../_commonComponents/LoadingMessage/LoadingMessage';
 
 import { commonValidator, errorList } from '../../../services/validations';
-import { resumeInfo } from '../../../constants/main';
 
 import { useSelector } from 'react-redux';
 
@@ -58,9 +57,10 @@ const CV = () => {
 			setIsLoading(false);
 			
 			if (isSuccess) {				
-				const candidates = data.candidates;
+				const candidates = data.candidates;				
+				const len = candidates.length;
 				
-				if (candidates.length > 0) {
+				if (len > 0) {
 					setIsResumeCreated(true);					
 					const {
 						name,
@@ -77,7 +77,7 @@ const CV = () => {
 						speciality,
 						studyDateFrom,
 						studyDateTo
-					} = data.candidates[0];					
+					} = data.candidates[len - 1];					
 					setInput({
 						name,
 						birth,

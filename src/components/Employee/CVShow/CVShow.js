@@ -53,7 +53,7 @@ const CVShow = () => {
 			
 			if (isSuccess) {				
 				const candidates = data.candidates;				
-				const len = candidates.length
+				const len = candidates.length;
 				
 				if (len > 0) {
 					setIsResumeCreated(true);

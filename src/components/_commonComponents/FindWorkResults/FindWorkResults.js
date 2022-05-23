@@ -1,24 +1,16 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import JobCard from '../../_commonComponents/JobCard/JobCard';
 import Button from '../../_commonComponents/Button/Button';
 
-// To do
-const selectedCardInfo = {
-	name: 'бухгалтер',
-	salaryMin: 10000,
-	salaryMax: 15000,
-	type: 'full time',
-	employer: 'Kurman',
-	location: 'Lviv',
-	phone: '+38024571241',
-	requirements: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
-	workingCondition: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
-	responsibilities: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum'
-}
+import { post } from '../../../services';
 
-const FindWorkResults = ({ data }) => {
+const FindWorkResults = ({ data, canBeSaved=true }) => {	
 	const [isSelectedShow, setIsSelectedShow] = useState(false);
+	const [selectedCardInfo, setSelectedCardInfo] = useState({});
+	
+	const token = useSelector(state => state.token);
 	
 	if (!data) {
 		return;
@@ -29,11 +21,12 @@ const FindWorkResults = ({ data }) => {
 	}
 	
 	const jobCardSelected = (item) => {
-		setIsSelectedShow(prev => !prev);
+		setSelectedCardInfo(item);
+		setIsSelectedShow(true);
 	};
 	
-	const items = data.map((item, index) => {
-		const { position, salaryMin, salaryMax, type, description } = item;
+	const items = data.map((item, index) => {		
+		const { eployeerName, salaryMin, salaryMax, type, description } = item;
 		
 		return (
 			<li
@@ -42,7 +35,7 @@ const FindWorkResults = ({ data }) => {
 				onClick={() => jobCardSelected(item)}
 			>
 				<JobCard
-					name={position}
+					eployeerName={eployeerName}
 					salaryMin={salaryMin}
 					salaryMax={salaryMax}
 					type={type}
@@ -51,6 +44,46 @@ const FindWorkResults = ({ data }) => {
 			</li>
 		);
 	});
+	
+	const saveVacancy = () => {
+		const {
+			eployeerName,
+			number,
+			position,
+			salarMax,
+			type,
+			place,
+			description
+		} = selectedCardInfo;
+		
+		const request = {
+			urlPoint: '/favorites',
+			props: {
+				eployeerName,
+				number,
+				position,
+				salarMax,
+				type,
+				place,
+				description
+			},
+			token
+		};
+		
+		post(request, ({ isSuccess, data }) => {
+			if (isSuccess) {
+				setTimeout(() => {
+					alert('Success');
+				}, 0);
+			} else {
+				setTimeout(() => {
+					alert(`Can't save. ${data.response.data.message}`);
+				}, 0);
+			}
+		});
+		
+		setIsSelectedShow(false);
+	};
 	
 	const applyOffer = () => {
 		setIsSelectedShow(false);
@@ -73,29 +106,29 @@ const FindWorkResults = ({ data }) => {
 				&&			
 				<div className="find-work-results__selected-outer">
 					<div className="selected">
-						<h4 className="selected__item selected__title">{selectedCardInfo.name}</h4>
-				
-						<p className="selected__item selected__salary">{selectedCardInfo.salaryMin} - {selectedCardInfo.salaryMax}</p>
+						<h4 className="selected__item selected__title">{selectedCardInfo?.position}</h4>
 						
-						<p className="selected__item selected__type">{selectedCardInfo.type}</p>
+						<p className="selected__item selected__employeer"><span className="bold">{selectedCardInfo?.eployeerName}</span></p>
 						
-						<p className="selected__item selected__employeer"><span className="bold">{selectedCardInfo.employer}</span></p>
+						<p className="selected__item selected__phone">Телефон: {selectedCardInfo?.number}</p>
 						
-						<div className="selected__item hr"/>
+						<p className="selected__item selected__location">Розташування: {selectedCardInfo?.place}</p>
+						 
+						<p className="selected__item selected__salary">Заробітна плата: {selectedCardInfo?.salaryMin} - {selectedCardInfo?.salaryMax}</p>
 						
-						<p className="selected__item selected__location">Розташування: {selectedCardInfo.location}</p>
+						<p className="selected__item selected__type">{selectedCardInfo?.type}</p>
 						
-						<p className="selected__item selected__phone">Телефон: {selectedCardInfo.phone}</p>
-						
-						<div className="selected__item hr"/>
-						
-						<p className="selected__item selected__requirements"><span className="bold">Вимоги:</span> {selectedCardInfo.requirements}</p>
-						
-						<p className="selected__item selected__workingCondition"><span className="bold">Умови роботи:</span> {selectedCardInfo.workingCondition}</p>
-						
-						<p className="selected__item selected__responsibilities"><span className="bold">Обов'язки:</span> {selectedCardInfo.responsibilities}</p>
+						<p className="selected__item selected__requirements">{selectedCardInfo?.description}</p>
 						
 						<div className="selected__button-wrapper">
+							{	canBeSaved
+								&&
+								<Button
+									text='Зберегти вакансію'
+									clickHandler={saveVacancy}
+								/>
+							}
+							
 							<Button
 								text='Надіслати заявку'
 								clickHandler={applyOffer}

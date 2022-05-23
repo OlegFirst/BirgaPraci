@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import IconInputWrapper from '../IconInputWrapper/IconInputWrapper';
 import Button from '../Button/Button';
 
-const FindWork = ({ vacanciesList, filterOptions=null, findWorkResponse }) => {	
+const FindWork = ({ vacanciesList, filterOptions=null, findWorkResponse }) => {
 	const [input, setInput] = useState({
 		position: '',
 		place: ''
@@ -33,7 +33,9 @@ const FindWork = ({ vacanciesList, filterOptions=null, findWorkResponse }) => {
 		
 		// - Finding out according on 'position' and 'place'
 		const { position, place } = input;		
-		const res = vacanciesList.filter(item => position.toLowerCase() === item.position && place.toLowerCase() === item.place);
+		const res = vacanciesList.filter(item => {
+			return (position.toLowerCase() === item.position.toLowerCase() && place.toLowerCase() === item.place.toLowerCase())
+		});
 
 		// - Finding out according on filter component`s data
 		const finalRes = filterSearch(res);
@@ -46,7 +48,6 @@ const FindWork = ({ vacanciesList, filterOptions=null, findWorkResponse }) => {
 		
 		if (filterSalary && filterSalary != 'any') {
 			const resSalary = vacanciesRes.filter(({ salaryMax, type }) => {
-				// console.log(salaryMax, +filterSalary);
 				
 				if (salaryMax >= +filterSalary) {
 					// console.log('----------------', filterActivity.parttime && type === 'part time');

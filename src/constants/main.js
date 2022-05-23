@@ -27,25 +27,6 @@ export const jobInfo = {
 	obligation: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum'
 };
 
-// const data = {
-		// name: '',
-		// birth: '',
-		// phoneNumber: '',
-		// positionWant: '',
-		// region: '',
-	
-		// company: '',
-		// position: '',
-		// workDateFrom: '',
-		// workDateTo: '',
-
-		// educationLevel: '',
-		// educationPlace: '',
-		// speciality: '',
-		// studyDateFrom: '',
-		// studyDateTo: ''
-	// };
-
 export const resumeInfo = {
 	name: 'Ivan Pupkin',
 	birth: '01.02.2024',

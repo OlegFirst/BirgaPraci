@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Header from '../../Header/Header';
 import Button from '../../_commonComponents/Button/Button';
@@ -11,8 +11,6 @@ import {
 	get,
 	deleteMethod
 } from '../../../services';
-
-let id = null;
 
 const JobInfo = () => {	
 	const data = {
@@ -29,6 +27,7 @@ const JobInfo = () => {
 	const [isCreated, setIsCreated] = useState(false);
 	
 	const token = useSelector(state => state.token);
+	const dispatch = useDispatch();
 	
 	useEffect(() => {
 		const request = {
@@ -37,18 +36,22 @@ const JobInfo = () => {
 		};
 		
 		get(request, ({ isSuccess, data }) => {
+			if (!token) {
+				alert('Вам потрібно спочатку увійти в програму');
+				return;
+			}
+			
 			if (isSuccess) {				
 				const vacancies = data.vacancies;
-				
-				console.log(vacancies)
-				
-				if (vacancies.length > 0) {
+				let len = vacancies.length;
+								
+				if (len > 0) {
 					setIsCreated(true);
-					setJobInfo(data.vacancies[0]);
-					
-					id = vacancies[0]._id;
-				} else {
-					id = null;
+					setJobInfo(vacancies[len - 1]);
+					dispatch({
+						type: 'setVacancies',
+						value: vacancies[len - 1]
+					});
 				}
 			} else {
 				alert(`Can't load data. ${data.response.data.message}`);
@@ -56,37 +59,17 @@ const JobInfo = () => {
 		});
 	}, []);
 	
-	const deleteButtonHandler = e => {
-		// e.preventDefault();
-		
-		// const request = {
-			// urlPoint: '/candidates/' + cvId,
-			// token
-		// };
-		
-		// deleteMethod(request, ({ isSuccess, data }) => {
-			// if (isSuccess) {
-				// alert('Succuss!');
-			// } else {				
-				// alert(`Can't delete. ${data.response.data.message}`);
-			// }
-		// });
-	};
-	
-	// Edit
-	const buttonClickHandler = () => {}
-	
 	return (
 		<section className="job-info">
 			<Header />
 		
 			<main className="job-info__main main">
-				{	!setIsCreated
+				{	!isCreated
 						&&
-						<h2 className="main__title">Резюме порожнє</h2>
+						<h2 className="main__title">Empty</h2>
 					}
 					
-				{	setIsCreated
+				{	isCreated
 					&&
 					<>
 					
@@ -120,15 +103,6 @@ const JobInfo = () => {
 									className="button"
 								>
 									OK
-								</Link>
-							</div>
-							
-							<div className="main__button">
-								<Link
-									to={'/edit-job'}
-									className="button"
-								>
-									Редагувати
 								</Link>
 							</div>
 						</div>

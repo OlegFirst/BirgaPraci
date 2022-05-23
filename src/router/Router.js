@@ -19,6 +19,8 @@ import CVShow from '../components/Employee/CVShow/CVShow';
 import CVEdit from '../components/Employee/CVEdit/CVEdit';
 import FindJob from '../components/Employee/FindJob/FindJob';
 import JobSearchTips from '../components/Employee/JobSearchTips/JobSearchTips';
+import VacanciesShow from '../components/Employee/VacanciesShow/VacanciesShow';
+import VacanciesSavedShow from '../components/Employee/VacanciesSavedShow/VacanciesSavedShow';
 
 // Employeer
 import CreateJob from '../components/Employeer/CreateJob/CreateJob';
@@ -40,6 +42,8 @@ const Router = () => (
 			<Route path={employeeArray[2].path} element={<CVShow />} />
 			<Route path={'resume-edit'} element={<CVEdit />} />
 			<Route path={employeeArray[3].path} element={<JobSearchTips />} />
+			<Route path={employeeArray[4].path} element={<VacanciesShow />} />
+			<Route path={employeeArray[5].path} element={<VacanciesSavedShow />} />
 			
 			<Route path={employeerArray[0].path} element={<CreateJob />} />
 			<Route path={'edit-job'} element={<EditJob />} />
